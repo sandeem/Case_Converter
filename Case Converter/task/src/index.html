@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Case Converter</title>
+</head>
+<body>
+<div class="title">Case Converter</div>
+<label>
+    <textarea id="entryText"></textarea>
+</label>
+<div>
+    <button id="upper-case">Upper Case</button>
+    <button id="lower-case">Lower Case</button>
+    <button id="proper-case">Proper Case</button>
+    <button id="sentence-case">Sentence Case</button>
+    <button id="save-text-file">Save Text File</button>
+</div>
+<script>
+    // creating a function to convert the text to upper case
+    function toUppercase() {
+        // get the text entered in the textarea box
+        let enterTextarea = document.getElementById('entryText').value;
+        // convert text to upper case
+        let upperCaseText = enterTextarea.toUpperCase();
+        // change the text in textarea to uppercase
+        document.getElementById('entryText').value = upperCaseText;
+    }
+    // Adding event listener to the button
+    document.getElementById('upper-case').addEventListener('click',toUppercase);
+
+    // creating a function to convert the text to lower case
+    function toLowercase() {
+        //  get the text entered in the textarea box
+        let enterTextarea = document.getElementById('entryText').value;
+        // convert text to lower case
+        let lowerCaseText = enterTextarea.toLowerCase();
+        // change the text in textarea to lowercase
+        document.getElementById('entryText').value = lowerCaseText;
+    }
+    // Adding event listener to the button
+    document.getElementById('lower-case').addEventListener('click',toLowercase);
+
+
+    // creating a function to convert the text to proper case where each word
+    // starts with the upper case, and the rest of the word is in the lower.
+    function toPropercase() {
+        // Get the input text from the textarea
+        let enterTextarea = document.getElementById('entryText').value;
+
+        // convert text to proper case
+        // splitting sentence by identifying the space (' ') at the end of the sentence
+        let arrayOfWords = enterTextarea.split(' ');
+        // map function is used to iterate over each element of arrayOfWords
+        let capitalizeSeparateWords = arrayOfWords.map(function(word) {
+            return word.charAt(0).toUpperCase() + word.slice(1);
+        });
+
+        // joining the words together
+        let properCaseText = capitalizeSeparateWords.join(' ');
+
+        // change the text in textarea to proper case
+        document.getElementById('entryText').value = properCaseText;
+    }
+    // Adding event listener to the button
+    document.getElementById('proper-case').addEventListener('click', toPropercase);
+
+
+    // creating a function to convert the text to proper case where each
+    // sentence starts with an upper case letter, and the rest of the sentence
+    // is in the lower case.
+    function toSentenceCase() {
+        // Get the input text from the textarea
+        let enterTextarea = document.getElementById('entryText').value;
+
+        // convert text to sentence case
+        // splitting sentence by identifying the period ('.') at the end of the sentence
+        let arrayOfSentences = enterTextarea.split('. ');
+        // map function is used to iterate each sentence element of arrayOfSentences
+        let capitalizeEachSentence = arrayOfSentences.map(function(sentence) {
+            return sentence.trim().charAt(0).toUpperCase() + sentence.slice(1).toLowerCase();
+        });
+
+        // joining the sentences together
+        let sentenceCaseText = capitalizeEachSentence.join('. ');
+
+        // change the text in textarea to sentence case
+        document.getElementById('entryText').value = sentenceCaseText;
+    }
+    // Adding event listener to the button
+    document.getElementById('sentence-case').addEventListener('click', toSentenceCase);
+
+    function download(filename, text) {
+        // create an anchor element ('a') to simulate a download link
+        let element = document.createElement('a');
+
+        // setAttribute('href', ...): method is used to set the value of the href attribute of the anchor element
+
+        // 'data:text/plain;charset=utf-8,' is a data URL scheme
+        // Data URLs will allow us to include data in-line in web pages as if they were external resources
+        // Here, we are specifying that the data is of type "text/plain" (plain text) and is encoded using UTF-8 character encoding
+
+        // encodeURIComponent(text) is a function that takes a text and returns a new string in which special characters (such as '&' or '=') that are used in URLs are encoded
+        // This ensures that the content of the text is properly included in the data URL without causing issues
+
+        // setting the href attribute to a data URL
+        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+
+        // setting the download attribute to the desired filename
+        element.setAttribute('download', filename);
+
+        // Hide the anchor element
+        element.style.display = 'none';
+
+        // Append the anchor element to the document body
+        document.body.appendChild(element);
+
+        // Simulating a click on the anchor element to trigger the download
+        element.click();
+
+        // Removing the anchor element from the document body
+        document.body.removeChild(element);
+    }
+    // Adding event listener to the button
+    document.getElementById('save-text-file').addEventListener('click', function() {
+
+        // change the text in textarea to sentence case
+        let textToConvert = document.getElementById('entryText').value;
+        // download the converted text under "text.txt" filename
+        download("text.txt", textToConvert);
+    });
+
+
+
+</script>
+</body>
+</html>
